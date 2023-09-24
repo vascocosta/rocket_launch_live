@@ -68,3 +68,13 @@ async fn main() -> Result<(), Box<dyn Error>> {
 }
 ```
 [RocketLaunch.Live API]: https://www.rocketlaunch.live/api
+[`RocketLaunchLive`]: https://docs.rs/rocket_launch_live/0.1.0/rocket_launch_live/struct.RocketLaunchLive.html
+[`api_models`]: https://docs.rs/rocket_launch_live/0.1.0/rocket_launch_live/api_models/index.html
+[`Response<T>`]: https://docs.rs/rocket_launch_live/0.1.0/rocket_launch_live/api_models/struct.Response.html
+[`api_models::Company`]: https://docs.rs/rocket_launch_live/0.1.0/rocket_launch_live/api_models/struct.Company.html
+[`api_models::Launch`]: https://docs.rs/rocket_launch_live/0.1.0/rocket_launch_live/api_models/struct.Launch.html
+[`api_models::Location`]: https://docs.rs/rocket_launch_live/0.1.0/rocket_launch_live/api_models/struct.Location.html
+[`api_models::Mission`]: https://docs.rs/rocket_launch_live/0.1.0/rocket_launch_live/api_models/struct.Mission.html
+[`api_models::Pad`]: https://docs.rs/rocket_launch_live/0.1.0/rocket_launch_live/api_models/struct.Pad.html
+[`api_models::Tag`]: https://docs.rs/rocket_launch_live/0.1.0/rocket_launch_live/api_models/struct.Tag.html
+[`api_models::Vehicle`]: https://docs.rs/rocket_launch_live/0.1.0/rocket_launch_live/api_models/struct.Vehicle.html
