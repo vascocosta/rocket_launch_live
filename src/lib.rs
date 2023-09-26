@@ -98,40 +98,47 @@ pub struct CompanyParamsBuilder<'a> {
 }
 
 impl<'a> CompanyParamsBuilder<'a> {
+    /// Create a new builder for the company paramaters.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Set the company id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
         self.id = Some(id);
 
         self
     }
 
+    /// Set the company name paramter.
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.name = Some(name);
 
         self
     }
 
+    /// Set the company country_code parameter.
     pub fn country_code(&mut self, country_code: &'a str) -> &mut Self {
         self.country_code = Some(country_code);
 
         self
     }
 
+    /// Set the company slug paramter.
     pub fn slug(&mut self, slug: &'a str) -> &mut Self {
         self.slug = Some(slug);
 
         self
     }
 
+    /// Set the company inactive parameter.
     pub fn inactive(&mut self, inactive: bool) -> &mut Self {
         self.inactive = Some(inactive);
 
         self
     }
 
+    /// Build the low level company parameters from all the set parameters.
     pub fn build(&self) -> Params {
         let mut params: Vec<String> = Vec::new();
 
@@ -167,22 +174,26 @@ pub struct LaunchParamsBuilder<'a> {
 }
 
 impl<'a> LaunchParamsBuilder<'a> {
+    /// Create a new builder for the launch paramaters.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Set the launch id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
         self.id = Some(id);
 
         self
     }
 
+    /// Set the launch cospar_id parameter.
     pub fn cospar_id(&mut self, cospar_id: &'a str) -> &mut Self {
         self.cospar_id = Some(cospar_id);
 
         self
     }
 
+    /// Set the launch after_date parameter.
     pub fn after_date(&mut self, after_date: Option<NaiveDate>) -> Result<&mut Self, &'static str> {
         match after_date {
             Some(date) => {
@@ -194,6 +205,7 @@ impl<'a> LaunchParamsBuilder<'a> {
         }
     }
 
+    /// Set the launch before_date parameter.
     pub fn before_date(
         &mut self,
         before_date: Option<NaiveDate>,
@@ -208,6 +220,7 @@ impl<'a> LaunchParamsBuilder<'a> {
         }
     }
 
+    /// Set the launch modified_since parameter.
     pub fn modified_since(
         &mut self,
         date: Option<NaiveDate>,
@@ -226,72 +239,84 @@ impl<'a> LaunchParamsBuilder<'a> {
         }
     }
 
+    /// Set the launch location_id parameter.
     pub fn location_id(&mut self, location_id: i64) -> &mut Self {
         self.location_id = Some(location_id);
 
         self
     }
 
+    /// Set the launch pad_id parameter.
     pub fn pad_id(&mut self, pad_id: i64) -> &mut Self {
         self.pad_id = Some(pad_id);
 
         self
     }
 
+    /// Set the launch provider_id parameter.
     pub fn provider_id(&mut self, provider_id: i64) -> &mut Self {
         self.provider_id = Some(provider_id);
 
         self
     }
 
+    /// Set the launch tag_id parameter.
     pub fn tag_id(&mut self, tag_id: i64) -> &mut Self {
         self.tag_id = Some(tag_id);
 
         self
     }
 
+    /// Set the launch vehicle_id parameter.
     pub fn vehicle_id(&mut self, vehicle_id: i64) -> &mut Self {
         self.vehicle_id = Some(vehicle_id);
 
         self
     }
 
+    /// Set the launch state_abbr parameter.
     pub fn state_abbr(&mut self, sate_abbr: &'a str) -> &mut Self {
         self.state_abbr = Some(sate_abbr);
 
         self
     }
 
+    /// Set the launch country_code parameter.
     pub fn country_code(&mut self, country_code: &'a str) -> &mut Self {
         self.country_code = Some(country_code);
 
         self
     }
 
+    /// Set the launch search parameter.
     pub fn search(&mut self, search: &'a str) -> &mut Self {
         self.search = Some(search);
 
         self
     }
 
+    /// Set the launch slug parameter.
     pub fn slug(&mut self, slug: &'a str) -> &mut Self {
         self.slug = Some(slug);
 
         self
     }
 
+    /// Set the launch limit parameter.
     pub fn limit(&mut self, limit: i64) -> &mut Self {
         self.limit = Some(limit);
 
         self
     }
 
+    /// Set the launch direction parameter.
     pub fn direction(&mut self, direction: Direction) -> &mut Self {
         self.direction = Some(direction);
 
         self
     }
 
+    /// Build the low level launch parameters from all the set parameters.
     pub fn build(&self) -> Params {
         let mut params: Vec<String> = Vec::new();
 
@@ -339,34 +364,40 @@ pub struct LocationParamsBuilder<'a> {
 }
 
 impl<'a> LocationParamsBuilder<'a> {
+    /// Create a new builder for the location parameters.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Set the location id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
         self.id = Some(id);
 
         self
     }
 
+    /// Set the location name parameter.
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.name = Some(name);
 
         self
     }
 
+    /// Set the location state_abbr parameter.
     pub fn state_abbr(&mut self, state_abbr: &'a str) -> &mut Self {
         self.state_abbr = Some(state_abbr);
 
         self
     }
 
+    /// Set the location country_code parameter.
     pub fn country_code(&mut self, country_code: &'a str) -> &mut Self {
         self.country_code = Some(country_code);
 
         self
     }
 
+    /// Build the low level location parameters from all the set parameters.
     pub fn build(&self) -> Params {
         let mut params = Vec::new();
 
@@ -387,22 +418,26 @@ pub struct MissionParamsBuilder<'a> {
 }
 
 impl<'a> MissionParamsBuilder<'a> {
+    /// Create a new builder for the mission parameters.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Set the mission id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
         self.id = Some(id);
 
         self
     }
 
+    /// Set the mission name parameter.
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.name = Some(name);
 
         self
     }
 
+    /// Build the low level mission parameters from all the set parameters.
     pub fn build(&self) -> Params {
         let mut params = Vec::new();
 
@@ -423,34 +458,40 @@ pub struct PadParamsBuilder<'a> {
 }
 
 impl<'a> PadParamsBuilder<'a> {
+    /// Create a new builder for the pad parameters.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Set the pad id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
         self.id = Some(id);
 
         self
     }
 
+    /// Set the pad name parameter.
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.name = Some(name);
 
         self
     }
 
+    /// Set the pad state_abbr parameter.
     pub fn state_abbr(&mut self, state_abbr: &'a str) -> &mut Self {
         self.state_abbr = Some(state_abbr);
 
         self
     }
 
+    /// Set the pad country_code parameter.
     pub fn country_code(&mut self, country_code: &'a str) -> &mut Self {
         self.country_code = Some(country_code);
 
         self
     }
 
+    /// Build the low level pad parameters from all the set parameters.
     pub fn build(&self) -> Params {
         let mut params = Vec::new();
 
@@ -471,22 +512,26 @@ pub struct TagParamsBuilder<'a> {
 }
 
 impl<'a> TagParamsBuilder<'a> {
+    /// Create a new builder for the tag parameters.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Set the tag id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
         self.id = Some(id);
 
         self
     }
 
+    /// Set the tag text parameter.
     pub fn text(&mut self, text: &'a str) -> &mut Self {
         self.text = Some(text);
 
         self
     }
 
+    /// Build the low level tag parameters from all the set parameters.
     pub fn build(&self) -> Params {
         let mut params = Vec::new();
 
@@ -505,22 +550,26 @@ pub struct VehicleParamsBuilder<'a> {
 }
 
 impl<'a> VehicleParamsBuilder<'a> {
+    /// Create a new builder for the vehicle parameters.
     pub fn new() -> Self {
         Self::default()
     }
 
+    /// Set the vehicle id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
         self.id = Some(id);
 
         self
     }
 
+    /// Set the vehicle name parameter.
     pub fn name(&mut self, name: &'a str) -> &mut Self {
         self.name = Some(name);
 
         self
     }
 
+    /// Build the low level vehicle parameters from all the set parameters.
     pub fn build(&self) -> Params {
         let mut params = Vec::new();
 

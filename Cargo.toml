@@ -1,6 +1,6 @@
 [package]
 name = "rocket_launch_live"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 description = "A type safe and asynchronous wrapper around the RocketLaunch.Live API."
 license = "MIT OR Apache-2.0"
