@@ -87,13 +87,21 @@ pub enum Direction {
 #[derive(Debug, Default)]
 pub struct Params(Vec<String>);
 
+/// Parameters used by multiple builders by composition.
+#[derive(Default)]
+pub struct CommonParams<'a> {
+    id: Option<i64>,
+    name: Option<&'a str>,
+    state_abbr: Option<&'a str>,
+    country_code: Option<&'a str>,
+    slug: Option<&'a str>,
+    page: Option<i64>,
+}
+
 /// Builder to generate the API parameters to filter calls to the companies endpoint.
 #[derive(Default)]
 pub struct CompanyParamsBuilder<'a> {
-    id: Option<i64>,
-    name: Option<&'a str>,
-    country_code: Option<&'a str>,
-    slug: Option<&'a str>,
+    common_params: CommonParams<'a>,
     inactive: Option<bool>,
 }
 
@@ -105,28 +113,28 @@ impl<'a> CompanyParamsBuilder<'a> {
 
     /// Set the company id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
-        self.id = Some(id);
+        self.common_params.id = Some(id);
 
         self
     }
 
     /// Set the company name paramter.
     pub fn name(&mut self, name: &'a str) -> &mut Self {
-        self.name = Some(name);
+        self.common_params.name = Some(name);
 
         self
     }
 
     /// Set the company country_code parameter.
     pub fn country_code(&mut self, country_code: &'a str) -> &mut Self {
-        self.country_code = Some(country_code);
+        self.common_params.country_code = Some(country_code);
 
         self
     }
 
     /// Set the company slug paramter.
     pub fn slug(&mut self, slug: &'a str) -> &mut Self {
-        self.slug = Some(slug);
+        self.common_params.slug = Some(slug);
 
         self
     }
@@ -138,15 +146,23 @@ impl<'a> CompanyParamsBuilder<'a> {
         self
     }
 
+    /// Set the company page parameter.
+    pub fn page(&mut self, page: i64) -> &mut Self {
+        self.common_params.page = Some(page);
+
+        self
+    }
+
     /// Build the low level company parameters from all the set parameters.
     pub fn build(&self) -> Params {
         let mut params: Vec<String> = Vec::new();
 
-        add_param!(params, self.id, "id");
-        add_param!(params, self.name, "name");
-        add_param!(params, self.country_code, "country_code");
-        add_param!(params, self.slug, "slug");
+        add_param!(params, self.common_params.id, "id");
+        add_param!(params, self.common_params.name, "name");
+        add_param!(params, self.common_params.country_code, "country_code");
+        add_param!(params, self.common_params.slug, "slug");
         add_param!(params, self.inactive, "inactive");
+        add_param!(params, self.common_params.page, "page");
 
         Params(params)
     }
@@ -155,7 +171,7 @@ impl<'a> CompanyParamsBuilder<'a> {
 /// Builder to generate the API parameters to filter calls to the launches endpoint.
 #[derive(Default)]
 pub struct LaunchParamsBuilder<'a> {
-    id: Option<i64>,
+    common_params: CommonParams<'a>,
     cospar_id: Option<&'a str>,
     after_date: Option<NaiveDate>,
     before_date: Option<NaiveDate>,
@@ -165,10 +181,7 @@ pub struct LaunchParamsBuilder<'a> {
     provider_id: Option<i64>,
     tag_id: Option<i64>,
     vehicle_id: Option<i64>,
-    state_abbr: Option<&'a str>,
-    country_code: Option<&'a str>,
     search: Option<&'a str>,
-    slug: Option<&'a str>,
     limit: Option<i64>,
     direction: Option<Direction>,
 }
@@ -181,7 +194,7 @@ impl<'a> LaunchParamsBuilder<'a> {
 
     /// Set the launch id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
-        self.id = Some(id);
+        self.common_params.id = Some(id);
 
         self
     }
@@ -276,14 +289,14 @@ impl<'a> LaunchParamsBuilder<'a> {
 
     /// Set the launch state_abbr parameter.
     pub fn state_abbr(&mut self, sate_abbr: &'a str) -> &mut Self {
-        self.state_abbr = Some(sate_abbr);
+        self.common_params.state_abbr = Some(sate_abbr);
 
         self
     }
 
     /// Set the launch country_code parameter.
     pub fn country_code(&mut self, country_code: &'a str) -> &mut Self {
-        self.country_code = Some(country_code);
+        self.common_params.country_code = Some(country_code);
 
         self
     }
@@ -297,7 +310,7 @@ impl<'a> LaunchParamsBuilder<'a> {
 
     /// Set the launch slug parameter.
     pub fn slug(&mut self, slug: &'a str) -> &mut Self {
-        self.slug = Some(slug);
+        self.common_params.slug = Some(slug);
 
         self
     }
@@ -316,11 +329,18 @@ impl<'a> LaunchParamsBuilder<'a> {
         self
     }
 
+    /// Set the launch page parameter.
+    pub fn page(&mut self, page: i64) -> &mut Self {
+        self.common_params.page = Some(page);
+
+        self
+    }
+
     /// Build the low level launch parameters from all the set parameters.
     pub fn build(&self) -> Params {
         let mut params: Vec<String> = Vec::new();
 
-        add_param!(params, self.id, "id");
+        add_param!(params, self.common_params.id, "id");
         add_param!(params, self.cospar_id, "cospar_id");
         add_param!(params, self.after_date, "after_date");
         add_param!(params, self.before_date, "before_date");
@@ -329,11 +349,12 @@ impl<'a> LaunchParamsBuilder<'a> {
         add_param!(params, self.provider_id, "provider_id");
         add_param!(params, self.tag_id, "tag_id");
         add_param!(params, self.vehicle_id, "vehicle_id");
-        add_param!(params, self.state_abbr, "state_abbr");
-        add_param!(params, self.country_code, "country_code");
+        add_param!(params, self.common_params.state_abbr, "state_abbr");
+        add_param!(params, self.common_params.country_code, "country_code");
         add_param!(params, self.search, "search");
-        add_param!(params, self.slug, "slug");
+        add_param!(params, self.common_params.slug, "slug");
         add_param!(params, self.limit, "limit");
+        add_param!(params, self.common_params.page, "page");
 
         if let Some(modified_since) = self.modified_since {
             params.push(format!(
@@ -357,10 +378,7 @@ impl<'a> LaunchParamsBuilder<'a> {
 /// Builder to generate the API parameters to filter calls to the locations endpoint.
 #[derive(Default)]
 pub struct LocationParamsBuilder<'a> {
-    id: Option<i64>,
-    name: Option<&'a str>,
-    state_abbr: Option<&'a str>,
-    country_code: Option<&'a str>,
+    common_params: CommonParams<'a>,
 }
 
 impl<'a> LocationParamsBuilder<'a> {
@@ -371,28 +389,35 @@ impl<'a> LocationParamsBuilder<'a> {
 
     /// Set the location id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
-        self.id = Some(id);
+        self.common_params.id = Some(id);
 
         self
     }
 
     /// Set the location name parameter.
     pub fn name(&mut self, name: &'a str) -> &mut Self {
-        self.name = Some(name);
+        self.common_params.name = Some(name);
 
         self
     }
 
     /// Set the location state_abbr parameter.
     pub fn state_abbr(&mut self, state_abbr: &'a str) -> &mut Self {
-        self.state_abbr = Some(state_abbr);
+        self.common_params.state_abbr = Some(state_abbr);
 
         self
     }
 
     /// Set the location country_code parameter.
     pub fn country_code(&mut self, country_code: &'a str) -> &mut Self {
-        self.country_code = Some(country_code);
+        self.common_params.country_code = Some(country_code);
+
+        self
+    }
+
+    /// Set the location page parameter.
+    pub fn page(&mut self, page: i64) -> &mut Self {
+        self.common_params.page = Some(page);
 
         self
     }
@@ -401,10 +426,11 @@ impl<'a> LocationParamsBuilder<'a> {
     pub fn build(&self) -> Params {
         let mut params = Vec::new();
 
-        add_param!(params, self.id, "id");
-        add_param!(params, self.name, "name");
-        add_param!(params, self.state_abbr, "state_abbr");
-        add_param!(params, self.country_code, "country_code");
+        add_param!(params, self.common_params.id, "id");
+        add_param!(params, self.common_params.name, "name");
+        add_param!(params, self.common_params.state_abbr, "state_abbr");
+        add_param!(params, self.common_params.country_code, "country_code");
+        add_param!(params, self.common_params.page, "page");
 
         Params(params)
     }
@@ -413,8 +439,7 @@ impl<'a> LocationParamsBuilder<'a> {
 /// Builder to generate the API parameters to filter calls to the missions endpoint.
 #[derive(Default)]
 pub struct MissionParamsBuilder<'a> {
-    id: Option<i64>,
-    name: Option<&'a str>,
+    common_params: CommonParams<'a>,
 }
 
 impl<'a> MissionParamsBuilder<'a> {
@@ -425,14 +450,21 @@ impl<'a> MissionParamsBuilder<'a> {
 
     /// Set the mission id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
-        self.id = Some(id);
+        self.common_params.id = Some(id);
 
         self
     }
 
     /// Set the mission name parameter.
     pub fn name(&mut self, name: &'a str) -> &mut Self {
-        self.name = Some(name);
+        self.common_params.name = Some(name);
+
+        self
+    }
+
+    /// Set the mission page parameter.
+    pub fn page(&mut self, page: i64) -> &mut Self {
+        self.common_params.page = Some(page);
 
         self
     }
@@ -441,8 +473,9 @@ impl<'a> MissionParamsBuilder<'a> {
     pub fn build(&self) -> Params {
         let mut params = Vec::new();
 
-        add_param!(params, self.id, "id");
-        add_param!(params, self.name, "name");
+        add_param!(params, self.common_params.id, "id");
+        add_param!(params, self.common_params.name, "name");
+        add_param!(params, self.common_params.page, "page");
 
         Params(params)
     }
@@ -451,10 +484,7 @@ impl<'a> MissionParamsBuilder<'a> {
 /// Builder to generate the API parameters to filter calls to the pads endpoint.
 #[derive(Default)]
 pub struct PadParamsBuilder<'a> {
-    id: Option<i64>,
-    name: Option<&'a str>,
-    state_abbr: Option<&'a str>,
-    country_code: Option<&'a str>,
+    common_params: CommonParams<'a>,
 }
 
 impl<'a> PadParamsBuilder<'a> {
@@ -465,28 +495,35 @@ impl<'a> PadParamsBuilder<'a> {
 
     /// Set the pad id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
-        self.id = Some(id);
+        self.common_params.id = Some(id);
 
         self
     }
 
     /// Set the pad name parameter.
     pub fn name(&mut self, name: &'a str) -> &mut Self {
-        self.name = Some(name);
+        self.common_params.name = Some(name);
 
         self
     }
 
     /// Set the pad state_abbr parameter.
     pub fn state_abbr(&mut self, state_abbr: &'a str) -> &mut Self {
-        self.state_abbr = Some(state_abbr);
+        self.common_params.state_abbr = Some(state_abbr);
 
         self
     }
 
     /// Set the pad country_code parameter.
     pub fn country_code(&mut self, country_code: &'a str) -> &mut Self {
-        self.country_code = Some(country_code);
+        self.common_params.country_code = Some(country_code);
+
+        self
+    }
+
+    /// Set the pad page parameter.
+    pub fn page(&mut self, page: i64) -> &mut Self {
+        self.common_params.page = Some(page);
 
         self
     }
@@ -495,10 +532,11 @@ impl<'a> PadParamsBuilder<'a> {
     pub fn build(&self) -> Params {
         let mut params = Vec::new();
 
-        add_param!(params, self.id, "id");
-        add_param!(params, self.name, "name");
-        add_param!(params, self.state_abbr, "state_abbr");
-        add_param!(params, self.country_code, "country_code");
+        add_param!(params, self.common_params.id, "id");
+        add_param!(params, self.common_params.name, "name");
+        add_param!(params, self.common_params.state_abbr, "state_abbr");
+        add_param!(params, self.common_params.country_code, "country_code");
+        add_param!(params, self.common_params.page, "page");
 
         Params(params)
     }
@@ -507,7 +545,7 @@ impl<'a> PadParamsBuilder<'a> {
 /// Builder to generate the API parameters to filter calls to the tags endpoint.
 #[derive(Default)]
 pub struct TagParamsBuilder<'a> {
-    id: Option<i64>,
+    common_params: CommonParams<'a>,
     text: Option<&'a str>,
 }
 
@@ -519,7 +557,7 @@ impl<'a> TagParamsBuilder<'a> {
 
     /// Set the tag id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
-        self.id = Some(id);
+        self.common_params.id = Some(id);
 
         self
     }
@@ -531,12 +569,20 @@ impl<'a> TagParamsBuilder<'a> {
         self
     }
 
+    /// Set the tag page parameter.
+    pub fn page(&mut self, page: i64) -> &mut Self {
+        self.common_params.page = Some(page);
+
+        self
+    }
+
     /// Build the low level tag parameters from all the set parameters.
     pub fn build(&self) -> Params {
         let mut params = Vec::new();
 
-        add_param!(params, self.id, "id");
+        add_param!(params, self.common_params.id, "id");
         add_param!(params, self.text, "text");
+        add_param!(params, self.common_params.page, "page");
 
         Params(params)
     }
@@ -545,8 +591,7 @@ impl<'a> TagParamsBuilder<'a> {
 /// Builder to generate the API parameters to filter calls to the vehicles endpoint.
 #[derive(Default)]
 pub struct VehicleParamsBuilder<'a> {
-    id: Option<i64>,
-    name: Option<&'a str>,
+    common_params: CommonParams<'a>,
 }
 
 impl<'a> VehicleParamsBuilder<'a> {
@@ -557,14 +602,21 @@ impl<'a> VehicleParamsBuilder<'a> {
 
     /// Set the vehicle id parameter.
     pub fn id(&mut self, id: i64) -> &mut Self {
-        self.id = Some(id);
+        self.common_params.id = Some(id);
 
         self
     }
 
     /// Set the vehicle name parameter.
     pub fn name(&mut self, name: &'a str) -> &mut Self {
-        self.name = Some(name);
+        self.common_params.name = Some(name);
+
+        self
+    }
+
+    /// Set the vehicle page parameter.
+    pub fn page(&mut self, page: i64) -> &mut Self {
+        self.common_params.page = Some(page);
 
         self
     }
@@ -573,8 +625,9 @@ impl<'a> VehicleParamsBuilder<'a> {
     pub fn build(&self) -> Params {
         let mut params = Vec::new();
 
-        add_param!(params, self.id, "id");
-        add_param!(params, self.name, "name");
+        add_param!(params, self.common_params.id, "id");
+        add_param!(params, self.common_params.name, "name");
+        add_param!(params, self.common_params.page, "page");
 
         Params(params)
     }
